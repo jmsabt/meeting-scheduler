@@ -1,70 +1,173 @@
-# Getting Started with Create React App
+---
+# **Team Meeting Scheduler**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based web application that helps teams find the best meeting times by analyzing individual availability from a CSV schedule. The app provides **top meeting time recommendations** and allows **specific time availability queries**, making scheduling easier and more efficient.
+---
 
-## Available Scripts
+## **Features**
 
-In the project directory, you can run:
+✅ **CSV Upload for Team Schedules**
 
-### `npm start`
+- Drag & drop or select a CSV file containing team member availability.
+- Supported format:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  ```
+  Name, Monday, Tuesday, Wednesday, Thursday, Friday
+  Alice, 09:00-12:00;13:00-17:00, 10:00-12:00, ..., ...
+  Bob, 08:00-11:00, 13:00-15:00, ..., ...
+  ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+✅ **Schedule Preview**
 
-### `npm test`
+- Displays a table of all team members and their daily availability.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+✅ **Top Meeting Recommendations**
 
-### `npm run build`
+- Suggests the best time slots for meetings based on:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  - Maximum number of fully available participants.
+  - Extended time slots if everyone remains available.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Allows adjusting the **earliest start time**.
+- Exports recommendations as a **CSV file**.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+✅ **Specific Time Availability Query**
 
-### `npm run eject`
+- Select a day and time range to check:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  - Who is **fully available**.
+  - Who is **partially available**.
+  - Who is **not available**.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Exports query results as **CSV**.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+✅ **Error Handling**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Validates CSV format (requires `Name` and weekdays).
+- Handles empty schedules and invalid files.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## **Tech Stack**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **React** – UI framework
+- **Lucide-react** – Icons
+- **CSS** – Custom styling
+- **FileReader API** – Reads and parses CSV files
+- **Blob API** – Exports data as CSV
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## **Installation & Setup**
 
-### Analyzing the Bundle Size
+1. **Clone the repository**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   ```bash
+   git clone https://github.com/yourusername/meeting-scheduler.git
+   cd meeting-scheduler
+   ```
 
-### Making a Progressive Web App
+2. **Install dependencies**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   ```bash
+   npm install
+   ```
 
-### Advanced Configuration
+3. **Run the development server**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   ```bash
+   npm start
+   ```
 
-### Deployment
+4. Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## **CSV Format Details**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- The first row must be the header:
+
+  ```
+  Name, Monday, Tuesday, Wednesday, Thursday, Friday
+  ```
+
+- Availability format:
+
+  - Multiple time slots per day separated by **semicolon (;)**.
+  - Time range format: `HH:mm-HH:mm` (24-hour format).
+  - Example:
+
+    ```
+    Alice, 09:00-12:00;13:00-17:00, 10:00-12:00, 09:30-11:00, , 14:00-16:00
+    Bob, 08:00-11:00, 13:00-15:00, 09:00-12:00, 10:00-11:30, 09:00-10:00
+    ```
+
+---
+
+## **How It Works**
+
+### **1. Upload Team Schedule**
+
+- Drag & drop or select your CSV file.
+- Data is parsed into an array of schedules.
+
+### **2. View Loaded Schedule**
+
+- Preview the table of all team members and availability.
+
+### **3. Get Top Recommendations**
+
+- Click **Get Recommendations**.
+- Adjust earliest start time if needed.
+- Export recommendations as CSV.
+
+### **4. Query Specific Time**
+
+- Select **Day**, **Start Time**, and **End Time**.
+- Check who is fully/partially/not available.
+- Export results as CSV.
+
+---
+
+## **Exported CSV Examples**
+
+### **Top Recommendations**
+
+```
+Day,Rank,Start Time,End Time,Duration,Fully Available Count,Fully Available Names
+Monday,#1,09:00,11:00,2h,3,"Alice, Bob, Carol"
+Monday,#2,11:00,12:00,1h,2,"Alice, Carol"
+```
+
+### **Specific Time Query**
+
+```
+Query Day,Query Time Range,Availability Status,Names
+Monday,09:00 - 10:00,Fully Available,"Alice, Bob"
+Monday,09:00 - 10:00,Partially Available,"Carol"
+Monday,09:00 - 10:00,Not Available,"Dave"
+```
+
+---
+
+## **Customization**
+
+- Update `MeetingScheduler.css` for custom styling.
+- Modify `TopRecommendations` logic to change scoring or ranking rules.
+
+---
+
+## **Future Enhancements**
+
+- ✅ Add weekend support.
+- ✅ Allow custom meeting duration.
+- ✅ Add authentication for multi-user scenarios.
+- ✅ Integrate with Google Calendar.
+
+---
+
+## **License**
+
+This project is licensed under the **MIT License**.
+
+---
